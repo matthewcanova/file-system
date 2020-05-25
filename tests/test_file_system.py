@@ -1,6 +1,6 @@
 import pytest
 from file_system.file_system import FileSystem
-from file_system.exceptions import IllegalFileSystemOperation
+from file_system.file_system_exceptions import IllegalFileSystemOperation
 
 
 def test_file_system_root():
@@ -139,12 +139,12 @@ def test_file_system_move():
 
     folder_bb = file_system.create('folder', 'bb', 'a')
 
-    text_a = file_system.create('text', 'c', 'a\\b')
+    text_c = file_system.create('text', 'c', 'a\\b')
 
     test_string = 'teststring'
-    file_system.write_to_file(text_a.path, test_string)
+    file_system.write_to_file(text_c.path, test_string)
 
-    file_system.move(text_a.path, folder_bb.path)
+    file_system.move(text_c.path, folder_bb.path)
 
     assert 'c' not in folder_b.get_names()
     assert 'c' in folder_bb.get_names()
@@ -155,3 +155,17 @@ def test_file_system_move():
 def test_file_system_write_to_file():
 
     file_system = FileSystem()
+
+    drive_a = file_system.create('drive', 'a', '')
+
+    folder_b = file_system.create('folder', 'b', 'a')
+
+    text_c = file_system.create('text', 'c', 'a\\b')
+
+    test_string = 'teststring'
+    file_system.write_to_file(text_c.path, test_string)
+
+    assert text_c.content == test_string
+    assert text_c.size == len(test_string)
+    assert folder_b.size == len(test_string)
+    assert drive_a.size == len(test_string)

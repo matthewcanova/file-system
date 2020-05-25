@@ -1,5 +1,5 @@
 from file_system.file_system_helpers import path_parse
-from file_system.exceptions import IllegalFileSystemOperation, PathNotFound, PathAlreadyExists
+from file_system.file_system_exceptions import IllegalFileSystemOperation, PathNotFound, PathAlreadyExists
 
 
 class FileSystemEntity:

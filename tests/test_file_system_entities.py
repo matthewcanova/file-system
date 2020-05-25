@@ -1,6 +1,6 @@
 import pytest
 from file_system.file_system_entities import FileSystemEntity, Root, Drive, Folder, Zip, Text
-from file_system.exceptions import IllegalFileSystemOperation, PathNotFound, PathAlreadyExists
+from file_system.file_system_exceptions import IllegalFileSystemOperation, PathNotFound, PathAlreadyExists
 
 
 def test_file_system_entity():

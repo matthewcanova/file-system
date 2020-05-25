@@ -1,7 +1,7 @@
 import math
 
 from file_system.file_system_entities import Root, Drive, Folder, Zip, Text
-from file_system.exceptions import IllegalFileSystemOperation, PathAlreadyExists, PathNotFound, NotATextFile
+from file_system.file_system_exceptions import IllegalFileSystemOperation, PathAlreadyExists, PathNotFound, NotATextFile
 from file_system.file_system_helpers import path_parse, print_recursive
 
 
