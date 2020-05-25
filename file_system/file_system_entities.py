@@ -170,7 +170,7 @@ class Zip(Container):
     def add_child(self, child):
         if child.name in self._children.keys():
             raise PathAlreadyExists('An entity with that name already exists')
-        elif child.entity_type not in self.VALID_ENTITIES:
+        elif child.entity_type not in self.VALID_ZIP_CHILDREN:
             raise IllegalFileSystemOperation('Entity is not valid for adding to a Zip')
         else:
             self._children[child.name] = child

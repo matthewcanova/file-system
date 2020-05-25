@@ -106,5 +106,52 @@ def test_file_system_create_zip():
     assert drive_a.size == len('teststring') / 2
 
 
+def test_file_system_delete():
+
+    file_system = FileSystem()
+
+    drive_a = file_system.create('drive', 'a', '')
+
+    folder_a = file_system.create('folder', 'a', 'a')
+
+    text_a = file_system.create('text', 'a', 'a\\a')
+
+    test_string = 'teststring'
+    file_system.write_to_file(text_a.path, test_string)
+
+    assert folder_a.size == len(test_string)
+    assert drive_a.size == len(test_string)
+
+    file_system.delete(text_a.path)
+
+    assert 'a' not in folder_a.get_names()
+    assert folder_a.size == 0
+    assert drive_a.size == 0
+
+
 def test_file_system_move():
-    pass
+
+    file_system = FileSystem()
+
+    file_system.create('drive', 'a', '')
+
+    folder_b = file_system.create('folder', 'b', 'a')
+
+    folder_bb = file_system.create('folder', 'bb', 'a')
+
+    text_a = file_system.create('text', 'c', 'a\\b')
+
+    test_string = 'teststring'
+    file_system.write_to_file(text_a.path, test_string)
+
+    file_system.move(text_a.path, folder_bb.path)
+
+    assert 'c' not in folder_b.get_names()
+    assert 'c' in folder_bb.get_names()
+    assert folder_b.size == 0
+    assert folder_bb.size == len(test_string)
+
+
+def test_file_system_write_to_file():
+
+    file_system = FileSystem()

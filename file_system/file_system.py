@@ -115,8 +115,8 @@ class FileSystem:
             self.update_sizes(destination_entity.path, source_child.size)  # increment sizes of destinations ancestors
 
             # add reference to child at destination, delete reference at source.
-            destination_entity.add_child(source_parent.get_child(source_child))
-            source_parent.delete_child(source_child)
+            destination_entity.add_child(source_parent.get_child(source_child.name))
+            source_parent.delete_child(source_child.name)
         else:
             raise PathAlreadyExists('Destination already has an entity with the source\'s name')
 
