@@ -4,6 +4,9 @@ from file_system.file_system_exceptions import IllegalFileSystemOperation, PathN
 
 
 def test_file_system_entity():
+    """
+    Test the getter/setters for the file system entity properties
+    """
 
     entity = FileSystemEntity('drive', 'A', 'A')
 
@@ -42,6 +45,9 @@ def test_file_system_entity():
 
 
 def test_root():
+    """
+    Test a Root container, that it can only contains drives and unique names
+    """
 
     root = Root('root', 'root', '')
 
@@ -65,6 +71,9 @@ def test_root():
 
 
 def test_drive():
+    """
+    Test a Drive container, that it can only contains folders/zips/text and unique names
+    """
 
     drive = Drive('drive', 'A', 'A')
 
@@ -88,6 +97,9 @@ def test_drive():
 
 
 def test_folder():
+    """
+    Test a Folder container, that it can only contains folders/zips/text and unique names
+    """
 
     drive = Drive('drive', 'A', 'A')
 
@@ -110,6 +122,10 @@ def test_folder():
 
 
 def test_zip():
+    """
+    Test a Zip container, that it can only contains folders/zips/text and unique names, and that any sizes
+    passing through it are halved.
+    """
 
     drive = Drive('drive', 'A', 'A')
 
@@ -134,6 +150,9 @@ def test_zip():
 
 
 def test_text():
+    """
+    Test a Text entity and the getters/setter for the content property
+    """
 
     drive = Drive('drive', 'A', 'A')
 

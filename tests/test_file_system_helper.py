@@ -3,6 +3,9 @@ from file_system.file_system import FileSystem
 
 
 def test_path_parse():
+    """
+    Test the path parser, which should remove leading/trailing \s and return a list of the path's entities
+    """
 
     path = '\\A\\stuff\\list\\'
 
@@ -14,6 +17,9 @@ def test_path_parse():
 
 
 def test_print_recursive():
+    """
+    Test a simple helper function that recursively prints the contents of an entity
+    """
 
     file_system = FileSystem()
 

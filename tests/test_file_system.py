@@ -107,6 +107,9 @@ def test_file_system_create_zip():
 
 
 def test_file_system_delete():
+    """
+    Test content being deleted
+    """
 
     file_system = FileSystem()
 
@@ -130,6 +133,9 @@ def test_file_system_delete():
 
 
 def test_file_system_move():
+    """
+    Test content being moved and sizes being incremented and decremented
+    """
 
     file_system = FileSystem()
 
@@ -153,6 +159,9 @@ def test_file_system_move():
 
 
 def test_file_system_write_to_file():
+    """
+    Test content being added to a text file and the size being distributed
+    """
 
     file_system = FileSystem()
 
