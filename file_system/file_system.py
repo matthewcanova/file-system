@@ -20,6 +20,10 @@ class FileSystem:
 
         self._root = Root('root', 'root', '')
 
+    def __str__(self):
+        string = print_recursive(self._root).splitlines()[1:]
+        return '\n'.join(string)
+
     def create(self, entity_type, name, path_of_parent):
         """
         Creates a new entity under the target parent
@@ -38,7 +42,7 @@ class FileSystem:
 
         # check that target parent doesn't already contain an entity with the same name
         if name in target_parent.get_names():
-            raise PathAlreadyExists('An entity with that name already exists in ' + path_of_parent)
+            raise PathAlreadyExists('An entity with that name already exists in {}'.format(path_of_parent))
 
         # concatenate the path of the new entity
         if target_parent.path == '':
@@ -57,7 +61,7 @@ class FileSystem:
             elif entity_type == 'text':
                 new_entity = Text(entity_type, name, new_path)
             else:
-                raise IllegalFileSystemOperation('Invalid entity_type: ' + entity_type)
+                raise IllegalFileSystemOperation('Invalid entity_type: {}'.format(entity_type))
         except Exception:
             raise
 
@@ -73,17 +77,18 @@ class FileSystem:
 
         # validate target path and find the target parent entity
         target_path = path_parse(path)
-        base_path = target_path[:-1]
+        base_path = '\\'.join(target_path[:-1])
         name = target_path[-1]
 
         try:
-            parent = self.get_entity_at_path('\\'.join(base_path))
+            parent = self.get_entity_at_path(base_path)
         except Exception:
             raise
 
         # decrement the sizes of ancestors
         self.update_sizes(parent.path, (parent.get_child(name).size * -1))
 
+        # delete child
         parent.delete_child(name)
 
     def move(self, source_path, destination_path):
@@ -115,7 +120,7 @@ class FileSystem:
             self.update_sizes(destination_entity.path, source_child.size)  # increment sizes of destinations ancestors
 
             # add reference to child at destination, delete reference at source.
-            destination_entity.add_child(source_parent.get_child(source_child.name))
+            destination_entity.add_child(source_child)
             source_parent.delete_child(source_child.name)
         else:
             raise PathAlreadyExists('Destination already has an entity with the source\'s name')
@@ -172,7 +177,5 @@ class FileSystem:
             new_current.size += compressed_size
             return compressed_size
 
-    def print_file_system(self):
 
-        print_recursive(self._root)
 

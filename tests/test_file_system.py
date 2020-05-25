@@ -3,6 +3,45 @@ from file_system.file_system import FileSystem
 from file_system.file_system_exceptions import IllegalFileSystemOperation
 
 
+def test_file_system_init():
+    """
+    Test the initial state of the file system
+    """
+
+    file_system = FileSystem()
+
+    assert len(file_system._root.get_names()) == 0
+    assert file_system._root.entity_type == 'root'
+    assert file_system._root.path == ''
+    assert file_system._root.name == 'root'
+    assert file_system._root.size == 0
+
+
+def test_file_system_string():
+    """
+    Test the file system string method
+    """
+
+    file_system = FileSystem()
+
+    file_system.create('drive', 'A', '')
+    file_system.create('drive', 'B', '')
+
+    file_system.create('folder', 'stuff1', 'A')
+    file_system.create('zip', 'zip1', 'A\\stuff1')
+    text_file = file_system.create('text', 'list1', 'A\\stuff1\\zip1')
+    file_system.create('folder', 'stuff2', 'A')
+
+    file_system.write_to_file(text_file.path, 'test')
+
+    file_system.create('zip', 'stuff3', 'B')
+    file_system.create('folder', 'stuff4', 'B\\stuff3')
+
+    expected_string = 'A 2\nstuff1 2\nzip1 2\nlist1 4\nstuff2 0\nB 0\nstuff3 0\nstuff4 0'
+
+    assert str(file_system) == expected_string
+
+
 def test_file_system_root():
     """
     Test the root to ensure only drives can be added

@@ -29,6 +29,6 @@ def test_print_recursive():
     file_system.create('folder', 'more_stuff', 'A')
 
     output_string = print_recursive(file_system._root)
-    expected_string = 'root\nA\nstuff\nlist\nmore_stuff\n'
+    expected_string = 'root 0\nA 0\nstuff 0\nlist 0\nmore_stuff 0\n'
 
     assert output_string == expected_string
