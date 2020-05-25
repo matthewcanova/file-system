@@ -136,14 +136,18 @@ class FileSystem:
         except Exception:
             raise
 
+        # ensure we are writing to a text entity
         if file.entity_type != 'text':
             raise NotATextFile('Cannot write content to a non-text entity')
         else:
-            size_delta = len(content) - len(file.content)
-            file.content = content
-            self.update_sizes(path, size_delta)
+            size_delta = len(content) - len(file.content)  # calculate the delta in size based on the new content
+            file.content = content  # update the content
+            self.update_sizes(path, size_delta)  # update sizes of all ancestors based on size delta
 
     def get_entity_at_path(self, path):
+        """
+        Given a path string, returns the entity at the path
+        """
 
         current_entity = self._root
 
@@ -157,25 +161,37 @@ class FileSystem:
         return current_entity
 
     def update_sizes(self, path, size):
+        """
+        Updates sizes of all entities in the path by size
+        """
 
         path_list = path_parse(path)
         self.recurse_sizes(path_list, self._root, size)
 
     def recurse_sizes(self, path, current, size):
+        """
+        Recursively update the sizes of ancestors
+        Base Case: Final entity in a path, update by size, and return size
+        Recursive Case Non-Zip: Recurse with rest of path, new current entity, and size value
+            Update size by returned value
+        Recursive Case Zip: Recurse with rest of path, new current entity, and size value
+            Update size by math.ceil(returned value/2.0)
+        """
 
         new_current = current.get_child(path[0])
+
+        # Base Case
         if len(path) == 1:
             new_current.size += size
             return size
+        # Recursive Case Non-Zip
         elif new_current.entity_type != 'zip':
             new_size = self.recurse_sizes(path[1:], new_current, size)
             new_current.size += new_size
             return new_size
+        # Recursive Case Zip
         else:
             new_size = self.recurse_sizes(path[1:], new_current, size)
             compressed_size = math.ceil(new_size/2.0)
             new_current.size += compressed_size
             return compressed_size
-
-
-

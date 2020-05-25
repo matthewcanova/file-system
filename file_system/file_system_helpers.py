@@ -1,9 +1,4 @@
 
-###################
-# HELPER FUNCTIONS
-###################
-
-
 def path_parse(path):
     """
     Guarantees no leading or trailing \s and no blank entries in the path list

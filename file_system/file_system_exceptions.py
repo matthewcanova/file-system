@@ -1,9 +1,4 @@
 
-#############
-# EXCEPTIONS
-#############
-
-
 class IllegalFileSystemOperation(Exception):
     """
     Violates specifications of the file system
