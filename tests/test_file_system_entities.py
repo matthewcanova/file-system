@@ -46,7 +46,7 @@ def test_file_system_entity():
 
 def test_root():
     """
-    Test a Root container, that it can only contains drives and unique names
+    Test that a Root container can only contains drives with unique names
     """
 
     root = Root('root', 'root', '')
@@ -72,7 +72,7 @@ def test_root():
 
 def test_drive():
     """
-    Test a Drive container, that it can only contains folders/zips/text and unique names
+    Test that a Drive container can only contains folders/zips/text with unique names
     """
 
     drive = Drive('drive', 'A', 'A')
@@ -98,7 +98,7 @@ def test_drive():
 
 def test_folder():
     """
-    Test a Folder container, that it can only contains folders/zips/text and unique names
+    Test that a Folder container can only contains folders/zips/text with unique names
     """
 
     drive = Drive('drive', 'A', 'A')
@@ -123,7 +123,7 @@ def test_folder():
 
 def test_zip():
     """
-    Test a Zip container, that it can only contains folders/zips/text and unique names, and that any sizes
+    Test that a Zip container can only contains folders/zips/text with unique names, and that any sizes
     passing through it are halved.
     """
 
