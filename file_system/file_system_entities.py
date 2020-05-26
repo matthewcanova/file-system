@@ -96,7 +96,8 @@ class Container(FileSystemEntity):
         # recursive case is text's non-recursive path update
         # and containers with empty children sets.
         for child in self._children.keys():
-            child.path = '{parent_path}\\{name}'.format(parent_path=new_path, name=child.name)
+            child_entity = self._children[child]
+            child_entity.path = '{parent_path}\\{name}'.format(parent_path=new_path, name=child_entity.name)
 
 
 class Root(Container):

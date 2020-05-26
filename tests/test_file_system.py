@@ -37,7 +37,8 @@ def test_file_system_string():
     file_system.create('zip', 'stuff3', 'B')
     file_system.create('folder', 'stuff4', 'B\\stuff3')
 
-    expected_string = 'A 2\nstuff1 2\nzip1 2\nlist1 4\nstuff2 0\nB 0\nstuff3 0\nstuff4 0'
+    expected_string = 'A 2\nA\\stuff1 2\nA\\stuff1\\zip1 2\nA\\stuff1\\zip1\\list1 4\nA\\stuff2 0\n' \
+                      'B 0\nB\\stuff3 0\nB\\stuff3\\stuff4 0'
 
     assert str(file_system) == expected_string
 

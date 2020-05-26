@@ -16,7 +16,7 @@ def print_recursive(entity):
     Recursively prints an entity and its children
     """
 
-    string = entity.name + ' ' + str(entity.size) + '\n'
+    string = entity.path + ' ' + str(entity.size) + '\n'
 
     if entity.entity_type != 'text':
         for entity_name in entity.get_names():

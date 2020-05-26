@@ -114,14 +114,16 @@ class FileSystem:
 
         # if the destination does not already contain an entity of the source's name, move it.
         if source_child not in destination_entity.get_names():
-            source_child = source_parent.get_child(source_child)
+            source_child_entity = source_parent.get_child(source_child)
 
-            self.update_sizes(source_parent.path, (source_child.size * -1))  # decrement sizes of sources ancestors
-            self.update_sizes(destination_entity.path, source_child.size)  # increment sizes of destinations ancestors
+            self.update_sizes(source_parent.path, (source_child_entity.size * -1))  # decrement sizes of sources ancestors
+            self.update_sizes(destination_entity.path, source_child_entity.size)  # increment sizes of destinations ancestors
 
-            # add reference to child at destination, delete reference at source.
-            destination_entity.add_child(source_child)
-            source_parent.delete_child(source_child.name)
+            # add reference to child at destination and update paths
+            destination_entity.add_child(source_child_entity)
+            source_child_entity.path = destination_entity.path + '\\' + source_child_entity.name
+            # delete reference at source and update paths
+            source_parent.delete_child(source_child_entity.name)
         else:
             raise PathAlreadyExists('Destination already has an entity with the source\'s name')
 
@@ -177,13 +179,20 @@ class FileSystem:
         Recursive Case Zip: Recurse with rest of path, new current entity, and size value
             Update size by math.ceil(returned value/2.0)
         """
+        if len(path) == 0:
+            return
 
         new_current = current.get_child(path[0])
 
         # Base Case
         if len(path) == 1:
-            new_current.size += size
-            return size
+            if new_current.entity_type == 'zip':
+                compressed_size = math.ceil(size / 2.0)
+                new_current.size += compressed_size
+                return compressed_size
+            else:
+                new_current.size += size
+                return size
         # Recursive Case Non-Zip
         elif new_current.entity_type != 'zip':
             new_size = self.recurse_sizes(path[1:], new_current, size)
