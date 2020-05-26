@@ -29,7 +29,7 @@ class FileSystem:
         Creates a new entity under the target parent
         :param entity_type root, drive, folder, zip, or text
         :param name string
-        :param path_of_parent '\' seperated path to target parent, or root identifier if a drive
+        :param path_of_parent '\' separated path to target parent, or root identifier if a drive
         :return entity newly created entity
         """
 

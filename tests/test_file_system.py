@@ -148,7 +148,7 @@ def test_file_system_create_zip():
 
 def test_file_system_delete():
     """
-    Test content being deleted
+    Test content being deleted, and removal of size from ancestors
     """
 
     file_system = FileSystem()
@@ -181,21 +181,21 @@ def test_file_system_move():
 
     file_system.create('drive', 'a', '')
 
-    folder_b = file_system.create('folder', 'b', 'a')
+    folder_b_source = file_system.create('folder', 'b', 'a')
 
-    folder_bb = file_system.create('folder', 'bb', 'a')
+    folder_b_target = file_system.create('folder', 'bb', 'a')
 
     text_c = file_system.create('text', 'c', 'a\\b')
 
     test_string = 'teststring'
     file_system.write_to_file(text_c.path, test_string)
 
-    file_system.move(text_c.path, folder_bb.path)
+    file_system.move(text_c.path, folder_b_target.path)
 
-    assert 'c' not in folder_b.get_names()
-    assert 'c' in folder_bb.get_names()
-    assert folder_b.size == 0
-    assert folder_bb.size == len(test_string)
+    assert 'c' not in folder_b_source.get_names()
+    assert 'c' in folder_b_target.get_names()
+    assert folder_b_source.size == 0
+    assert folder_b_target.size == len(test_string)
 
 
 def test_file_system_write_to_file():

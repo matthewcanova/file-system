@@ -93,7 +93,7 @@ class Container(FileSystemEntity):
         self._path = new_path
 
         # recursively update the children's paths,
-        # recursive case is text's non-recursive path update
+        # base case is text's non-recursive path update
         # and containers with empty children sets.
         for child in self._children.keys():
             child_entity = self._children[child]
