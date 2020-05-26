@@ -18,7 +18,7 @@ def test_path_parse():
 
 def test_print_recursive():
     """
-    Test a simple helper function that recursively prints the contents of an entity
+    Test a helper function that recursively prints the contents of an entity
     """
 
     file_system = FileSystem()
