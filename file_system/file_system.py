@@ -9,7 +9,7 @@ class FileSystem:
 
     """
     There is only 1 Root and it can contain zero to many Drives.
-    A folder, driver, or zip file, may contain zero to many other folders, or files (text or zip).
+    A folder, drive, or zip file, may contain zero to many other folders, or files (text or zip).
     A text file does not contain any other entity (leaf nodes only).
     A drive is not contained in any entity (root only).
     Any non-drive entity, must be contained in another entity (non-root only).
@@ -27,6 +27,10 @@ class FileSystem:
     def create(self, entity_type, name, path_of_parent):
         """
         Creates a new entity under the target parent
+        :param entity_type root, drive, folder, zip, or text
+        :param name string
+        :param path_of_parent '\' seperated path to target parent, or root identifier if a drive
+        :return entity newly created entity
         """
 
         roots = [None, '', '\\', 'root']  # possible paths for root
@@ -36,7 +40,7 @@ class FileSystem:
 
         # validate target path exists and find the target parent entity
         try:
-            target_parent = self.get_entity_at_path(path_of_parent)
+            target_parent = self._get_entity_at_path(path_of_parent)
         except Exception:
             raise
 
@@ -73,6 +77,7 @@ class FileSystem:
     def delete(self, path):
         """
         Deletes an existing entry
+        :param path path to the entity to be deleted
         """
 
         # validate target path and find the target parent entity
@@ -81,12 +86,12 @@ class FileSystem:
         name = target_path[-1]
 
         try:
-            parent = self.get_entity_at_path(base_path)
+            parent = self._get_entity_at_path(base_path)
         except Exception:
             raise
 
         # decrement the sizes of ancestors
-        self.update_sizes(parent.path, (parent.get_child(name).size * -1))
+        self._update_sizes(parent.path, (parent.get_child(name).size * -1))
 
         # delete child
         parent.delete_child(name)
@@ -94,6 +99,8 @@ class FileSystem:
     def move(self, source_path, destination_path):
         """
         Change the parent of an entity
+        :param source_path the path to the entity to be moved
+        :param destination_path the parent to move the entity under
         """
 
         # find source parent and child
@@ -102,13 +109,13 @@ class FileSystem:
         source_child = target_path[-1]
 
         try:
-            source_parent = self.get_entity_at_path(source_parent_path)
+            source_parent = self._get_entity_at_path(source_parent_path)
         except Exception:
             raise
 
         # find destination entity
         try:
-            destination_entity = self.get_entity_at_path(destination_path)
+            destination_entity = self._get_entity_at_path(destination_path)
         except Exception:
             raise
 
@@ -116,8 +123,8 @@ class FileSystem:
         if source_child not in destination_entity.get_names():
             source_child_entity = source_parent.get_child(source_child)
 
-            self.update_sizes(source_parent.path, (source_child_entity.size * -1))  # decrement sizes of sources ancestors
-            self.update_sizes(destination_entity.path, source_child_entity.size)  # increment sizes of destinations ancestors
+            self._update_sizes(source_parent.path, (source_child_entity.size * -1))  # dec sizes of sources ancestors
+            self._update_sizes(destination_entity.path, source_child_entity.size)  # inc sizes of destinations ancestors
 
             # add reference to child at destination and update paths
             destination_entity.add_child(source_child_entity)
@@ -130,11 +137,13 @@ class FileSystem:
     def write_to_file(self, path, content):
         """
         Change the content of a text file
+        :param path path to the text file whose content will be written to
+        :param content the content that will be written to the text file
         """
 
         # find target entity
         try:
-            file = self.get_entity_at_path(path)
+            file = self._get_entity_at_path(path)
         except Exception:
             raise
 
@@ -144,9 +153,9 @@ class FileSystem:
         else:
             size_delta = len(content) - len(file.content)  # calculate the delta in size based on the new content
             file.content = content  # update the content
-            self.update_sizes(path, size_delta)  # update sizes of all ancestors based on size delta
+            self._update_sizes(path, size_delta)  # update sizes of all ancestors based on size delta
 
-    def get_entity_at_path(self, path):
+    def _get_entity_at_path(self, path):
         """
         Given a path string, returns the entity at the path
         """
@@ -162,15 +171,15 @@ class FileSystem:
 
         return current_entity
 
-    def update_sizes(self, path, size):
+    def _update_sizes(self, path, size):
         """
         Updates sizes of all entities in the path by size
         """
 
         path_list = path_parse(path)
-        self.recurse_sizes(path_list, self._root, size)
+        self._recurse_sizes(path_list, self._root, size)
 
-    def recurse_sizes(self, path, current, size):
+    def _recurse_sizes(self, path, current, size):
         """
         Recursively update the sizes of ancestors
         Base Case: Final entity in a path, update by size, and return size
@@ -195,12 +204,12 @@ class FileSystem:
                 return size
         # Recursive Case Non-Zip
         elif new_current.entity_type != 'zip':
-            new_size = self.recurse_sizes(path[1:], new_current, size)
+            new_size = self._recurse_sizes(path[1:], new_current, size)
             new_current.size += new_size
             return new_size
         # Recursive Case Zip
         else:
-            new_size = self.recurse_sizes(path[1:], new_current, size)
+            new_size = self._recurse_sizes(path[1:], new_current, size)
             compressed_size = math.ceil(new_size/2.0)
             new_current.size += compressed_size
             return compressed_size
