@@ -28,18 +28,18 @@ names to the children's object.
 
 ### Supported Operations:
 
-####Create – Creates a new entity.
+Create – Creates a new entity.
 - Arguments: Type, Name, Path of parent.
 - Exceptions: Path not found; Path already exists; Illegal File System Operation.
 
-####Delete – Deletes an existing entity (and all the entities it contains).
+Delete – Deletes an existing entity (and all the entities it contains).
 - Arguments: Path
 - Exceptions: Path not found.
 
-####Move – Changing the parent of an entity.
+Move – Changing the parent of an entity.
 - Arguments: Source Path, Destination Path.
 - Exceptions: Path not found; Path already exists, Illegal File System Operation.
 
-####WriteToFile – Changes the content of a text file.
+WriteToFile – Changes the content of a text file.
 - Arguments: Path, Content
 - Exceptions: Path not found; Not a text file.
